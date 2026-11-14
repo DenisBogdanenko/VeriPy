@@ -16,6 +16,22 @@ are available through pytest plugins.
 Learn more about the target service in the
 [Restful Booker API documentation](https://restful-booker.herokuapp.com/apidoc/index.html).
 
+## GitHub Actions
+
+The `API tests` workflow runs automatically for pushes to `main` and pull
+requests targeting `main`. It installs the dependencies and runs the suite
+on Ubuntu with Python 3.13 and two pytest workers.
+
+### Run tests from your browser
+
+1. Open the [API tests workflow](https://github.com/DenisBogdanenko/VeriPy/actions/workflows/tests.yml).
+2. Click **Run workflow**, select the `main` branch, and click **Run workflow** again.
+3. Open the new run, select **api-tests**, and expand **Run API tests** to view
+   the pytest output and any failures.
+
+A green check marks a successful run. A red cross marks a failed run.
+Manual runs require a signed-in GitHub account with write access to the repository.
+
 ## Technology stack
 
 | Tool | Purpose |
@@ -109,22 +125,6 @@ rounds sequentially, use session repetition with parallel execution disabled.
 ```
 
 Add `-x` to stop the run on the first failure or error.
-
-## GitHub Actions
-
-The `API tests` workflow runs automatically for pushes to `main` and pull
-requests targeting `main`. It installs the dependencies and runs the suite
-on Ubuntu with Python 3.13 and two pytest workers.
-
-### Run tests from your browser
-
-1. Open the [API tests workflow](https://github.com/DenisBogdanenko/VeriPy/actions/workflows/tests.yml).
-2. Click **Run workflow**, select the `main` branch, and click **Run workflow** again.
-3. Open the new run, select **api-tests**, and expand **Run API tests** to view
-   the pytest output and any failures.
-
-A green check marks a successful run. A red cross marks a failed run.
-Manual runs require a signed-in GitHub account with write access to the repository.
 
 ## Configuration
 

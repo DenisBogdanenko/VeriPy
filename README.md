@@ -27,6 +27,7 @@ Learn more about the target service in the
 | jsonschema | Required fields, value types, and date format validation |
 | pytest-xdist | Parallel test execution |
 | pytest-repeat | Repeated execution for investigating intermittent failures |
+| GitHub Actions | Automatic and manual test execution in CI |
 
 ## Getting started
 
@@ -109,6 +110,22 @@ rounds sequentially, use session repetition with parallel execution disabled.
 
 Add `-x` to stop the run on the first failure or error.
 
+## GitHub Actions
+
+The `API tests` workflow runs automatically for pushes to `main` and pull
+requests targeting `main`. It installs the dependencies and runs the suite
+on Ubuntu with Python 3.13 and two pytest workers.
+
+### Run tests from your browser
+
+1. Open the [API tests workflow](https://github.com/DenisBogdanenko/VeriPy/actions/workflows/tests.yml).
+2. Click **Run workflow**, select the `main` branch, and click **Run workflow** again.
+3. Open the new run, select **api-tests**, and expand **Run API tests** to view
+   the pytest output and any failures.
+
+A green check marks a successful run. A red cross marks a failed run.
+Manual runs require a signed-in GitHub account with write access to the repository.
+
 ## Configuration
 
 | Setting | Value |
@@ -156,6 +173,9 @@ separate test cases.
 
 ```text
 VeriPy/
+├── .github/
+│   └── workflows/
+│       └── tests.yml
 ├── api/
 │   ├── __init__.py
 │   └── booking_client.py

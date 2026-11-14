@@ -1,0 +1,26 @@
+BOOKING_SCHEMA = {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+        "firstname",
+        "lastname",
+        "totalprice",
+        "depositpaid",
+        "bookingdates",
+    ],
+    "properties": {
+        "firstname": {"type": "string"},
+        "lastname": {"type": "string"},
+        "totalprice": {"type": "number"},
+        "depositpaid": {"type": "boolean"},
+        "additionalneeds": {"type": "string"},
+        "bookingdates": {
+            "type": "object",
+            "required": ["checkin", "checkout"],
+            "properties": {
+                "checkin": {"type": "string", "format": "date"},
+                "checkout": {"type": "string", "format": "date"},
+            },
+        },
+    },
+}

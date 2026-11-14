@@ -1,0 +1,6 @@
+pytest==9.1.1
+requests==2.34.2
+Faker==40.54.0
+jsonschema==4.26.0
+pytest-xdist==3.8.0
+pytest-repeat==0.9.4

@@ -46,6 +46,7 @@ Workflow `API tests` автоматически запускается при о
 | pytest-xdist | Параллельное выполнение тестов |
 | pytest-repeat | Повторные запуски для исследования нестабильных ошибок |
 | GitHub Actions | Автоматический и ручной запуск тестов в CI |
+| Docker | Окружение Python и запуск тестов в контейнере |
 
 ## Быстрый старт
 
@@ -129,6 +130,46 @@ python3.13 -m venv .venv
 
 Добавьте `-x`, чтобы остановить прогон при первой ошибке или падении.
 
+## Docker
+
+Для запуска нужен работающий движок Docker с поддержкой Linux-контейнеров.
+В Windows откройте Docker Desktop и дождитесь готовности движка.
+
+Соберите образ из корня репозитория. Он содержит Python 3.13, установленные
+зависимости и тесты проекта.
+
+```powershell
+docker build -t veripy .
+```
+
+Запустите весь набор против публичного Restful Booker API в двух процессах pytest.
+
+```powershell
+docker run --rm veripy
+```
+
+Контейнер завершает работу вместе с pytest, а `--rm` удаляет его после
+завершения. Код завершения контейнера соответствует результату pytest.
+После изменения кода или зависимостей соберите образ заново.
+
+Аргументы после имени образа заменяют параметры pytest по умолчанию.
+Например, можно выбрать файл или повторить каждый случай трижды в десяти процессах.
+
+```powershell
+docker run --rm veripy tests/test_auth.py -v
+docker run --rm veripy -n 10 --count=3 -v
+```
+
+Адрес API можно явно передать через `-e BOOKER_BASE_URL`.
+
+```powershell
+docker run --rm -e BOOKER_BASE_URL=https://restful-booker.herokuapp.com veripy
+```
+
+`Dockerfile` задаёт сборку образа и запуск pytest. `.dockerignore` исключает
+из контекста сборки локальное виртуальное окружение, метаданные Git,
+настройки IDE и кэши Python.
+
 ## Настройки
 
 | Параметр | Значение |
@@ -196,7 +237,9 @@ VeriPy/
 ├── utils/
 │   ├── __init__.py
 │   └── data_generator.py
+├── .dockerignore
 ├── .gitignore
+├── Dockerfile
 ├── conftest.py
 ├── pytest.ini
 ├── requirements.txt

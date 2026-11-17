@@ -44,6 +44,7 @@ Manual runs require a signed-in GitHub account with write access to the reposito
 | pytest-xdist | Parallel test execution |
 | pytest-repeat | Repeated execution for investigating intermittent failures |
 | GitHub Actions | Automatic and manual test execution in CI |
+| Docker | Packaged Python environment and containerized test execution |
 
 ## Getting started
 
@@ -126,6 +127,46 @@ rounds sequentially, use session repetition with parallel execution disabled.
 
 Add `-x` to stop the run on the first failure or error.
 
+## Docker
+
+Use a running Docker Engine with Linux container support. On Windows, start
+Docker Desktop and wait for the engine to be ready.
+
+Build the image from the repository root. The image includes Python 3.13,
+the installed dependencies, and the test suite.
+
+```powershell
+docker build -t veripy .
+```
+
+Run all tests against the public Restful Booker API with two pytest workers.
+
+```powershell
+docker run --rm veripy
+```
+
+The container exits when pytest finishes, and `--rm` removes it afterwards.
+Its exit code follows the pytest result. Rebuild the image after changing
+the code or dependencies.
+
+Arguments after the image name override the default pytest options. For
+example, select a file or run every test case three times with ten workers.
+
+```powershell
+docker run --rm veripy tests/test_auth.py -v
+docker run --rm veripy -n 10 --count=3 -v
+```
+
+Pass the API address explicitly with `-e BOOKER_BASE_URL`.
+
+```powershell
+docker run --rm -e BOOKER_BASE_URL=https://restful-booker.herokuapp.com veripy
+```
+
+`Dockerfile` defines the image and pytest entry point. `.dockerignore`
+excludes the local virtual environment, Git metadata, IDE settings, and
+Python caches from the build context.
+
 ## Configuration
 
 | Setting | Value |
@@ -193,7 +234,9 @@ VeriPy/
 ├── utils/
 │   ├── __init__.py
 │   └── data_generator.py
+├── .dockerignore
 ├── .gitignore
+├── Dockerfile
 ├── conftest.py
 ├── pytest.ini
 ├── requirements.txt
